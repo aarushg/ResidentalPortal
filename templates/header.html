@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block title %} Burgh Rentals {% endblock %} {%
+block body %}
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Burgh Rentals</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/index.html"
+              >Home</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/h5558/charges">Manage Charges</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/h5558/residents">Manage Users</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Messages</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="jumbotron p-3">
+  <div class="well text-center">
+    <h1>Welcome to Burgh Rentals!</h1>
+  </div>
+</div>
+
+{% endblock %}
