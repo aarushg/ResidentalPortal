@@ -22,31 +22,99 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+
+
 #Database for the User
 class residents(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
+    profession = db.Column(db.String(100))
+    professionCode = db.Column(db.String(100))
     phone = db.Column(db.String(100))
     phoneProvider = db.Column(db.String(100))
-    RoomNumber = db.Column(db.String(100))
+    propCode = db.Column(db.String(100))
+    RentCode = db.Column(db.String(100))
     DepositAmt = db.Column(db.String(100))
+    leaseStartDate = db.Column(db.String(100))
+    leaseEndDate = db.Column(db.String(100))
     MoveInDate = db.Column(db.String(100))    
     MoveOutDate = db.Column(db.String(100))
+    LiveWith = db.Column(db.String(100))
+    LiveWithRelationship = db.Column(db.String(100))
+    emergency1Name = db.Column(db.String(100))
+    emergency1Phone = db.Column(db.String(100))
+    emergency1Address = db.Column(db.String(100))
+    emergency1Relationship = db.Column(db.String(100))
+    emergency2Name = db.Column(db.String(100))
+    emergency2Phone = db.Column(db.String(100))
+    emergency2Address = db.Column(db.String(100))
+    emergency2Relationship = db.Column(db.String(100))
 
-    def __init__(self, name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate):
-
+    def __init__(self, name, email,profession,professionCode ,phone, phoneProvider,propCode, RoomNumber, DepositAmt, MoveInDate, MoveOutDate, LiveWith,LiveWithRelationshi,emergency1Name,emergency1Phone,emergency1Address,emergency1Relationship,emergency2Name,emergency2Phone,emergency2Address,emergency2Relationship):
         self.name = name
         self.email = email
+        self.profession = profession
+        self.professionCode = professionCode
         self.phone = phone
         self.phoneProvider = phoneProvider
+        self.propCode = propCode
         self.RoomNumber = RoomNumber
         self.DepositAmt = DepositAmt
-        
         self.MoveInDate = MoveInDate
         self.MoveOutDate = MoveOutDate
+        self.LiveWith = LiveWith 
+        self.LiveWithRelationship = LiveWithRelationship
+        self.emergency1Name = emergency1Name
+        self.emergency1Phone = emergency1Phone
+        self.emergency1Address = emergency1Address
+        self.emergency1Relationship = emergency1Relationship
+        self.emergency2Name = emergency2Name
+        self.emergency2Phone = emergency2Phone
+        self.emergency2Address = emergency2Address
+        self.emergency2Relationship = emergency2Relationship
 
-    #Database for the charges
+    
+class rentalProperty(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    propCode  = db.Column(db.String(100))
+    address  = db.Column(db.String(100))
+    availDate = db.Column(db.String(100))
+
+    def __init__(self, propCode, address, availDate):
+        self.propCode = propCode
+        self.address = address
+        self.availDate = availDate
+
+class rentalPropertyAssets(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    propCode  = db.Column(db.String(100))
+    buyDate = db.Column(db.String(100))
+    item  = db.Column(db.String(100))
+    assetdesc  = db.Column(db.String(100))
+    cost = db.Column(db.String(100))
+
+
+    def __init__(self, propCode, buyDate, item, assetdesc, cost):
+        self.propCode = propCode
+        self.buyDate = buyDate
+        self.item = item
+        self.assetdesc = assetdesc
+        self.cost = cost
+
+class rentalUnit(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    propCode  = db.Column(db.String(100))
+    rentalCode  = db.Column(db.String(100))
+    rent = db.Column(db.String(100))
+
+
+    def __init__(self, propCode, address, availDate):
+        self.propCode = propCode
+        self.address = address
+        self.availDate = availDate
+        
+#Database for the charges
 class charges(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     billdatestart  = db.Column(db.String(100))
@@ -55,6 +123,8 @@ class charges(db.Model):
     item = db.Column(db.String(100))
     discription = db.Column(db.String(100))
     charge = db.Column(db.String(100))
+
+
 
     def __init__(self, billdatestart, billdateend, user, item, discription, charge ):
 
@@ -90,32 +160,45 @@ def Index():
 @app.route('/residents')
 def Residents():
     all_data = residents.query.all()
+
     return render_template("residents.html", residents = all_data)
-    #return redirect(url_for('/h5558/resident/'))
 
 
 #this route is for inserting data to mysql database via html forms
-@app.route('/resident/insertResident', methods = ['POST'])
+@app.route('/residents/insertResident', methods = ['POST'])
 def insertResident():
+
     if request.method == 'POST' and request.form:
+    
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
+
         phoneProvider = request.form['phoneProvider']
         RoomNumber = request.form['RoomNumber']
         DepositAmt = request.form['DepositAmt']
-        MoveInDate = request.form['MoveInDate']
+    
+        MoveInDate = request.form['MoveInDate']   
         MoveOutDate = request.form['MoveOutDate']
+ 
+
 
         my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate)
         db.session.add(my_data)
         db.session.commit()
 
-        flash("Employee Inserted Successfully")
-        return request.form
-    else :
-        flash("Employee Was Not Inserted")
-        return "Failed to insert data due to request being null"
+        flash("Resident Inserted Successfully")
+
+        #return redirect(url_for('/residents'))
+        return redirect(url_for('Index'))
+
+        #return(request.form)
+    else:
+
+        flash("Resident Not Inserted")
+
+        return("Failed request form is null or type not post")
+
 
 
 #this is our update route where we are going to update our employee
@@ -143,9 +226,12 @@ def updateResident():
 
         return redirect(url_for('Index'))
 
+
+
+
 #This route is for deleting our employee
 @app.route('/resident/delete/<id>/', methods = ['GET', 'POST'])
-def deleteH5558Resident(id):
+def deleteResident(id):
     my_data = residents.query.get(id)
     db.session.delete(my_data)
     db.session.commit()
@@ -155,7 +241,7 @@ def deleteH5558Resident(id):
 
 
 ####################################################################################################################
-# This is the charges portal for 5558
+# This is the charges portal
 #
 #
 #
@@ -169,8 +255,8 @@ def charges():
     return render_template("charges.html", charges = all_data)
 
 #this route is for inserting data to mysql database via html forms
-@app.route('/charges/insertH5558charges', methods = ['POST'])
-def insertcharges():
+@app.route('/charges/insertCharges', methods = ['POST'])
+def insertCharges():
 
     if request.method == 'POST':
 
@@ -191,14 +277,14 @@ def insertcharges():
         db.session.add(my_data)
         db.session.commit()
 
-        flash("Employee Inserted Successfully")
+        flash("Resident Inserted Successfully")
 
-        return redirect(url_for('/h5558/charges/'))
+        return redirect(url_for('/charges/'))
 
 
-#this is our update route where we are going to update our employee
-@app.route('/h5558/charges/update', methods = ['GET', 'POST'])
-def updateH5558charges():
+#this is our update route where we are going to update our residents
+@app.route('/charges/update', methods = ['GET', 'POST'])
+def updatecharges():
 
     if request.method == 'POST':
         my_data = residents.query.get(request.form.get('id'))
@@ -214,7 +300,7 @@ def updateH5558charges():
 
 
         db.session.commit()
-        flash("Employee Updated Successfully")
+        flash("Resident Updated Successfully")
 
         return redirect(url_for('Index'))
 
@@ -222,12 +308,12 @@ def updateH5558charges():
 
 
 #This route is for deleting our employee
-@app.route('/h5558/charges/delete/<id>/', methods = ['GET', 'POST'])
+@app.route('/charges/delete/<id>/', methods = ['GET', 'POST'])
 def deleteH5558charges(id):
     my_data = charges.query.get(id)
     db.session.delete(my_data)
     db.session.commit()
-    flash("Employee Deleted Successfully")
+    flash("Resident Deleted Successfully")
 
     return redirect(url_for('Index'))
 
