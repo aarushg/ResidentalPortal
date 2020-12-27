@@ -46,11 +46,7 @@
             <td>{{row.MoveOutDate}}</td>
 
             <td>
-              <a
-                href="/resident/update/{{row.id}}"
-                class="btn btn-warning btn-xs"
-                data-toggle="modal"
-                data-target="#modaledit{{row.id}}"
+              <a href="/resident/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}"
                 >Edit</a
               >
               <a href="/resident/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')"
@@ -170,9 +166,11 @@
   </div>
 </div>
 <script>
+  // this is the ajax call
   let form = $("#insert-residents");
   $(document).on("submit", form, function (e) {
     e.preventDefault();
+    // pulls all values from the from
     let formData = {
       name: $("input[data-name='name']").val(),
       email: $("input[data-name='email']").val(),
@@ -188,6 +186,7 @@
       method: "POST",
       data: formData,
     }).done(function (res) {
+      // resets form and logs results
       form[0].reset();
       $("#mymodal").modal("hide");
       $(".modal-backdrop").hide();
