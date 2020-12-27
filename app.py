@@ -39,7 +39,7 @@ class residents(db.Model):
 
 
 
-    def __init__(self, name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDay, MoveInMonth, MoveInYear, MoveOutDay, MoveOutMonth, MoveOutYear):
+    def __init__(self, name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate):
 
         self.name = name
         self.email = email
@@ -56,18 +56,23 @@ class residents(db.Model):
     #Database for the charges
 class charges(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    date  = db.Column(db.String(100))
-    email = db.Column(db.String(100))
+    billdatestart  = db.Column(db.String(100))
+    billdateend  = db.Column(db.String(100))
+    user = db.Column(db.String(100))
+    item = db.Column(db.String(100))
+    discription = db.Column(db.String(100))
+    charge = db.Column(db.String(100))
 
 
 
-    def __init__(self, name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDay, MoveInMonth, MoveInYear, MoveOutDay, MoveOutMonth, MoveOutYear):
+    def __init__(self, billdatestart, billdateend, user, item, discription, charge ):
 
-        self.name = name
-        self.email = email
-        self.phone = phone
-
-
+        self.billdatestart = billdatestart
+        self.billdateend = billdateend
+        self.user = user
+        self.item = item
+        self.discription = discription
+        self.charge = charge
 
 ####################################################################################################################
 #This is the index route where we are going to
@@ -96,6 +101,8 @@ def h5558Residents():
     all_data = residents.query.all()
 
     return render_template("h5558residents.html", residents = all_data)
+    #return redirect(url_for('/h5558/resident/'))
+
 
 #this route is for inserting data to mysql database via html forms
 @app.route('/h5558/resident/insertH5558Resident', methods = ['POST'])
@@ -111,18 +118,12 @@ def insertH5558Resident():
         RoomNumber = request.form['RoomNumber']
         DepositAmt = request.form['DepositAmt']
     
-        MoveInDay = request.form['MoveInDay']
-        MoveInMonth = request.form['MoveInMonth']
-        MoveInYear = request.form['MoveInYear']
-
-    
-        MoveOutDay = request.form['MoveOutDay']
-        MoveOutMonth = request.form['MoveOutMonth']
-        MoveOutYear = request.form['MoveOutYear']
+        MoveInDate = request.form['MoveInDate']   
+        MoveOutDate = request.form['MoveOutDate']
+ 
 
 
-
-        my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDay, MoveInMonth, MoveInYear, MoveOutDay, MoveOutMonth, MoveOutYear)
+        my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate)
         db.session.add(my_data)
         db.session.commit()
 
@@ -146,14 +147,10 @@ def updateH5558Resident():
         my_data.RoomNumber = request.form['RoomNumber']
         my_data.DepositAmt = request.form['DepositAmt']
     
-        my_data.MoveInDay = request.form['MoveInDay']
-        my_data.MoveInMonth = request.form['MoveInMonth']
-        my_data.MoveInYear = request.form['MoveInYear']
+        my_data.MoveInDate = request.form['MoveInDate']
 
     
-        my_data.MoveOutDay = request.form['MoveOutDay']
-        my_data.MoveOutMonth = request.form['MoveOutMonth']
-        my_data.MoveOutYear = request.form['MoveOutYear']
+        my_data.MoveOutDate = request.form['MoveOutDate']
 
         db.session.commit()
         flash("Employee Updated Successfully")
@@ -202,18 +199,12 @@ def insertH5558charges():
         RoomNumber = request.form['RoomNumber']
         DepositAmt = request.form['DepositAmt']
     
-        MoveInDay = request.form['MoveInDay']
-        MoveInMonth = request.form['MoveInMonth']
-        MoveInYear = request.form['MoveInYear']
-
-    
-        MoveOutDay = request.form['MoveOutDay']
-        MoveOutMonth = request.form['MoveOutMonth']
-        MoveOutYear = request.form['MoveOutYear']
+        MoveInDate = request.form['MoveInDate']
+        MoveOutDate = request.form['MoveOutDay']
 
 
 
-        my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDay, MoveInMonth, MoveInYear, MoveOutDay, MoveOutMonth, MoveOutYear)
+        my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate)
         db.session.add(my_data)
         db.session.commit()
 
@@ -232,19 +223,12 @@ def updateH5558charges():
         my_data.name = request.form['name']
         my_data.email = request.form['email']
         my_data.phone = request.form['phone']
-
         my_data.phoneProvider = request.form['phoneProvider']
         my_data.RoomNumber = request.form['RoomNumber']
         my_data.DepositAmt = request.form['DepositAmt']
-    
-        my_data.MoveInDay = request.form['MoveInDay']
-        my_data.MoveInMonth = request.form['MoveInMonth']
-        my_data.MoveInYear = request.form['MoveInYear']
+        my_data.MoveInDate = request.form['MoveInDate']
+        my_data.MoveOutDate = request.form['MoveOutDate']
 
-    
-        my_data.MoveOutDay = request.form['MoveOutDay']
-        my_data.MoveOutMonth = request.form['MoveOutMonth']
-        my_data.MoveOutYear = request.form['MoveOutYear']
 
         db.session.commit()
         flash("Employee Updated Successfully")
