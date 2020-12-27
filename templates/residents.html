@@ -1,0 +1,202 @@
+{% extends 'base.html' %} {% include 'header.html' %} {% block title %} Home {% endblock %} {% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col md-12">
+      <div class="jumbotron p-3">
+        <h2>
+          Manage <b>5558 Wilkins Residents </b>
+          <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add New Residents</button>
+        </h2>
+
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+
+        <div class="alert alert-success alert-dismissable" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">x</span>
+          </button>
+
+          {{message}}
+        </div>
+
+        {% endfor %} {% endif %} {% endwith %}
+
+        <table class="table table-hover table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Phone Provider</th>
+            <th>Room #</th>
+            <th>Deposit Amt</th>
+            <th>Move In Date</th>
+            <th>Move Out Date</th>
+            <th>Action</th>
+          </tr>
+
+          {% for row in residents %}
+          <tr>
+            <td>{{row.name}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.phone}}</td>
+            <td>{{row.phoneProvider}}</td>
+            <td>{{row.RoomNumber}}</td>
+            <td>{{row.DepositAmt}}</td>
+            <td>{{row.MoveInDate}}</td>
+            <td>{{row.MoveOutDate}}</td>
+
+            <td>
+              <a
+                href="/resident/update/{{row.id}}"
+                class="btn btn-warning btn-xs"
+                data-toggle="modal"
+                data-target="#modaledit{{row.id}}"
+                >Edit</a
+              >
+              <a href="/resident/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')"
+                >Delete</a
+              >
+            </td>
+          </tr>
+
+          <!-- Modal Edit Employee-->
+          <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Update Information</h4>
+                </div>
+
+                <div class="modal-body">
+                  <form id="edit-resident" action="{{url_for('updateResident')}}" method="POST">
+                    <div class="form-group">
+                      <label>Name:</label>
+                      <input type="hidden" name="id" value="{{row.id}}" />
+
+                      <input type="text" class="form-control" name="name" value="{{row.name}}" />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Email:</label>
+
+                      <input type="text" class="form-control" name="email" value="{{row.email}}" />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Phone:</label>
+
+                      <input type="text" class="form-control" name="phone" value="{{row.phone}}" />
+                    </div>
+
+                    <div class="form-group">
+                      <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </table>
+      </div>
+
+      <!-- Modal Add Resident-->
+
+      <div id="mymodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Resident</h4>
+            </div>
+            <div class="modal-body">
+              <form id="insert-residents">
+                <div class="form-group row">
+                  <div class="col">
+                    <label>Name:</label>
+                    <input type="text" class="form-control" data-name="name" required />
+                  </div>
+                  <div class="col">
+                    <label>Email:</label>
+                    <input type="email" class="form-control" data-name="email" required />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <label>Phone:</label>
+                    <input type="phone" class="form-control" data-name="phone" required />
+                  </div>
+                  <div class="col">
+                    <label>Phone Provider:</label>
+                    <input type="string" class="form-control" data-name="phoneProvider" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Room Number:</label>
+                  <input type="number" class="form-control" data-name="RoomNumber" required />
+                </div>
+
+                <div class="form-group">
+                  <label>Deposit Amt:</label>
+                  <input type="number" class="form-control" data-name="DepositAmt" required />
+                </div>
+
+                <div class="form-group row">
+                  <div class="col">
+                    <label>Move In Date:</label>
+                    <input class="form-control" data-name="MoveInDate" type="date" />
+                  </div>
+                  <div class="col">
+                    <label>Move Out Date:</label>
+                    <input class="form-control" data-name="MoveOutDate" type="date" />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">Close</button>
+              <input class="btn btn-primary" type="submit" value="Add Employee" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let form = $("#insert-residents");
+  $(document).on("submit", form, function (e) {
+    e.preventDefault();
+    let formData = {
+      name: $("input[data-name='name']").val(),
+      email: $("input[data-name='email']").val(),
+      phone: $("input[data-name='phone']").val(),
+      phoneProvider: $("input[data-name='phoneProvider']").val(),
+      RoomNumber: $("input[data-name='RoomNumber']").val(),
+      DepositAmt: $("input[data-name='DepositAmt']").val(),
+      MoveInDate: $("input[data-name='MoveInDate']").val(),
+      MoveOutDate: $("input[data-name='MoveOutDate']").val(),
+    };
+    $.ajax({
+      url: "/resident/insertResident",
+      method: "POST",
+      data: formData,
+    }).done(function (res) {
+      form[0].reset();
+      $("#mymodal").modal("hide");
+      $(".modal-backdrop").hide();
+      setTimeout(function () {
+        $(".alert-dismissable").hide();
+      }, 5000);
+      console.log(res);
+    });
+  });
+</script>
+
+{% endblock %}

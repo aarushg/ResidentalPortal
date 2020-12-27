@@ -22,8 +22,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
-
 #Database for the User
 class residents(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -33,11 +31,8 @@ class residents(db.Model):
     phoneProvider = db.Column(db.String(100))
     RoomNumber = db.Column(db.String(100))
     DepositAmt = db.Column(db.String(100))
-    
     MoveInDate = db.Column(db.String(100))    
     MoveOutDate = db.Column(db.String(100))
-
-
 
     def __init__(self, name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate):
 
@@ -51,8 +46,6 @@ class residents(db.Model):
         self.MoveInDate = MoveInDate
         self.MoveOutDate = MoveOutDate
 
-
-    
     #Database for the charges
 class charges(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -62,8 +55,6 @@ class charges(db.Model):
     item = db.Column(db.String(100))
     discription = db.Column(db.String(100))
     charge = db.Column(db.String(100))
-
-
 
     def __init__(self, billdatestart, billdateend, user, item, discription, charge ):
 
@@ -96,45 +87,40 @@ def Index():
 ####################################################################################################################
 
 
-@app.route('/h5558/residents')
-def h5558Residents():
+@app.route('/residents')
+def Residents():
     all_data = residents.query.all()
-
-    return render_template("h5558residents.html", residents = all_data)
+    return render_template("residents.html", residents = all_data)
     #return redirect(url_for('/h5558/resident/'))
 
 
 #this route is for inserting data to mysql database via html forms
-@app.route('/h5558/resident/insertH5558Resident', methods = ['POST'])
-def insertH5558Resident():
-
-    if request.method == 'POST':
-
+@app.route('/resident/insertResident', methods = ['POST'])
+def insertResident():
+    if request.method == 'POST' and request.form:
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
-
         phoneProvider = request.form['phoneProvider']
         RoomNumber = request.form['RoomNumber']
         DepositAmt = request.form['DepositAmt']
-    
-        MoveInDate = request.form['MoveInDate']   
+        MoveInDate = request.form['MoveInDate']
         MoveOutDate = request.form['MoveOutDate']
- 
-
 
         my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate)
         db.session.add(my_data)
         db.session.commit()
 
         flash("Employee Inserted Successfully")
-
-        return redirect(url_for('/h5558/resident/'))
+        return request.form
+    else :
+        flash("Employee Was Not Inserted")
+        return "Failed to insert data due to request being null"
 
 
 #this is our update route where we are going to update our employee
-@app.route('/h5558/resident/update', methods = ['GET', 'POST'])
-def updateH5558Resident():
+@app.route('/resident/update', methods = ['GET', 'POST'])
+def updateResident():
 
     if request.method == 'POST':
         my_data = residents.query.get(request.form.get('id'))
@@ -157,11 +143,8 @@ def updateH5558Resident():
 
         return redirect(url_for('Index'))
 
-
-
-
 #This route is for deleting our employee
-@app.route('/h5558/resident/delete/<id>/', methods = ['GET', 'POST'])
+@app.route('/resident/delete/<id>/', methods = ['GET', 'POST'])
 def deleteH5558Resident(id):
     my_data = residents.query.get(id)
     db.session.delete(my_data)
@@ -179,15 +162,15 @@ def deleteH5558Resident(id):
 ####################################################################################################################
 
 
-@app.route('/h5558/charges')
-def h5558charges():
+@app.route('/charges')
+def charges():
     all_data = charges.query.all()
 
-    return render_template("h5558charges.html", charges = all_data)
+    return render_template("charges.html", charges = all_data)
 
 #this route is for inserting data to mysql database via html forms
-@app.route('/h5558/charges/insertH5558charges', methods = ['POST'])
-def insertH5558charges():
+@app.route('/charges/insertH5558charges', methods = ['POST'])
+def insertcharges():
 
     if request.method == 'POST':
 
