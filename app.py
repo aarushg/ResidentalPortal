@@ -94,7 +94,6 @@ class rentalPropertyAssets(db.Model):
     assetdesc  = db.Column(db.String(100))
     cost = db.Column(db.String(100))
 
-
     def __init__(self, propCode, buyDate, item, assetdesc, cost):
         self.propCode = propCode
         self.buyDate = buyDate
