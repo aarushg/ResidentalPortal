@@ -157,7 +157,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">Close</button>
-              <input class="btn btn-primary" type="submit" value="Add Employee" />
+              <input class="btn btn-primary" data-type="submit" value="Add Resident" />
             </div>
           </div>
         </div>
@@ -167,8 +167,8 @@
 </div>
 <script>
   // this is the ajax call
-  let form = $("#insert-residents");
-  $(document).on("submit", form, function (e) {
+  let form = $("input[data-type='submit']");
+  form.on("click", function (e) {
     e.preventDefault();
     // pulls all values from the from
     let formData = {
@@ -182,12 +182,12 @@
       MoveOutDate: $("input[data-name='MoveOutDate']").val(),
     };
     $.ajax({
-      url: "/resident/insertResident",
+      url: "/residents/insertResident",
       method: "POST",
       data: formData,
-    }).done(function (res) {
+    }).then(function (res) {
       // resets form and logs results
-      form[0].reset();
+      $("#insert-residents")[0].reset();
       $("#mymodal").modal("hide");
       $(".modal-backdrop").hide();
       setTimeout(function () {

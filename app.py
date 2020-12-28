@@ -173,14 +173,11 @@ def insertResident():
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
-
         phoneProvider = request.form['phoneProvider']
         RoomNumber = request.form['RoomNumber']
         DepositAmt = request.form['DepositAmt']
-    
         MoveInDate = request.form['MoveInDate']   
         MoveOutDate = request.form['MoveOutDate']
- 
 
 
         my_data = residents( name, email, phone, phoneProvider, RoomNumber, DepositAmt, MoveInDate, MoveOutDate)
@@ -190,14 +187,11 @@ def insertResident():
         flash("Resident Inserted Successfully")
 
         #return redirect(url_for('/residents'))
-        return redirect(url_for('Index'))
-
-        #return(request.form)
+        # return redirect(url_for('Index'))
+        return(request.form)
     else:
-
-        flash("Resident Not Inserted")
-
-        return("Failed request form is null or type not post")
+        flash("Resident Can Not Be Inserted")
+        return("Failed: request form is null")
 
 
 
