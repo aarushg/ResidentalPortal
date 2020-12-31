@@ -76,8 +76,7 @@ class residents(db.Model):
 
     
 class rentalProperty(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    propCode  = db.Column(db.String(100))
+    propCode  = db.Column(db.Integer, primary_key = True)
     address  = db.Column(db.String(100))
     availDate = db.Column(db.String(100))
 

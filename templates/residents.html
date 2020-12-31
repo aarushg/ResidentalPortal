@@ -29,6 +29,7 @@
             <th>professionCode</th>
             <th>Phone</th>
             <th>Phone Provider</th>
+            <th>propCode</th>
             <th>Room #</th>
             <th>Deposit Amt</th>
             <th>Move In Date</th>
@@ -50,15 +51,26 @@
           <tr>
             <td>{{row.name}}</td>
             <td>{{row.email}}</td>
+            <td>{{row.profession}}</td>
+            <td>{{row.professionCode}}</td>
             <td>{{row.phone}}</td>
             <td>{{row.phoneProvider}}</td>
+            <td>{{row.propCode}}</td>
             <td>{{row.RoomNumber}}</td>
             <td>{{row.DepositAmt}}</td>
             <td>{{row.MoveInDate}}</td>
             <td>{{row.MoveOutDate}}</td>
-            <td>LiveWith</td>
-
-            <td>
+            <td>{{row.LiveWith}}</td>
+            <td>{{row.LiveWithRelationship}}</td>
+            <td>{{row.emergency1Name}}</td>
+            <td>{{row.emergency1Phone}}</td>
+            <td>{{row.emergency1Address}}</td>
+            <td>{{row.emergency1Relationship}}</td>
+            <td>{{row.emergency2Name}}</td>
+            <td>{{row.emergency2Phone}}</td>
+            <td>{{row.emergency2Address}}</td>
+            <td>{{row.emergency2Relationship}}</td>
+          <td>
               <a href="/resident/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}"
                 >Edit</a
               >
@@ -204,7 +216,7 @@
       $("#mymodal").modal("hide");
       $(".modal-backdrop").hide();
       setTimeout(function () {
-        $(".alert-dismissable").hide();
+        $(".alert-dismissable").hide();me
       }, 5000);
       console.log(res);
     });
