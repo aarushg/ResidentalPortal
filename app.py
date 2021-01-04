@@ -148,13 +148,25 @@ def Index():
 
 
 ####################################################################################################################
-# This is the resident portal for the Users: Manage users in the system for 5558
+# This is the resident portal for Rental Property
 #
 #
 #
 ####################################################################################################################
 
+@app.route('/rentalproperty')
+def RentalProperty():
+    all_data = residents.query.all()
 
+    return render_template("rentalproperty.html", residents = all_data)
+
+
+####################################################################################################################
+# This is the resident portal for the Users: Manage users in the system for 5558
+#
+#
+#
+####################################################################################################################
 @app.route('/residents')
 def Residents():
     all_data = residents.query.all()
