@@ -24,66 +24,30 @@
         <table class="table table-hover table-responsive table-bordered table-striped">
           <thead class="thead-dark">
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>profession</th>
-              <th>professionCode</th>
-              <th>Phone</th>
-              <th>Phone Provider</th>
               <th>propCode</th>
-              <th>Room #</th>
-              <th>Deposit Amt</th>
-              <th>Move In Date</th>
-              <th>Move Out Date</th>
-              <th>LiveWith</th>
-              <th>LiveWithRelationship</th>
-              <th>emergency1Name</th>
-              <th>emergency1Phone</th>
-              <th>emergency1Address</th>
-              <th>emergency1Relationship</th>
-              <th>emergency2Name</th>
-              <th>emergency2Phone</th>
-              <th>emergency2Address</th>
-              <th>emergency2Relationship</th>
+              <th>Address</th>
+              <th>AvailabilityDate</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {% for row in residents %}
             <tr>
-              <td>{{row.name}}</td>
-              <td>{{row.email}}</td>
-              <td>{{row.profession}}</td>
-              <td>{{row.professionCode}}</td>
-              <td>{{row.phone}}</td>
-              <td>{{row.phoneProvider}}</td>
               <td>{{row.propCode}}</td>
-              <td>{{row.RoomNumber}}</td>
-              <td>{{row.DepositAmt}}</td>
-              <td>{{row.MoveInDate}}</td>
-              <td>{{row.MoveOutDate}}</td>
-              <td>{{row.LiveWith}}</td>
-              <td>{{row.LiveWithRelationship}}</td>
-              <td>{{row.emergency1Name}}</td>
-              <td>{{row.emergency1Phone}}</td>
-              <td>{{row.emergency1Address}}</td>
-              <td>{{row.emergency1Relationship}}</td>
-              <td>{{row.emergency2Name}}</td>
-              <td>{{row.emergency2Phone}}</td>
-              <td>{{row.emergency2Address}}</td>
-              <td>{{row.emergency2Relationship}}</td>
+              <td>{{row.Address}}</td>
+              <td>{{row.AvailabilityDate}}</td>
               <td>
-                <a href="/resident/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}"
+                <a href="/rentalproperty/update/{{row.propCode}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.propCode}}"
                   >Edit</a
                 >
-                <a href="/resident/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')"
+                <a href="/rentalpropertydelete/{{row.propCode}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')"
                   >Delete</a
                 >
               </td>
             </tr>
 
             <!-- Modal Edit Employee-->
-            <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+            <div id="modaledit{{row.propCode}}" class="modal fade" role="dialog">
               <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header">
