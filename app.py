@@ -156,13 +156,61 @@ def Index():
 
 @app.route('/rentalproperty')
 def RentalProperty():
-    all_data = residents.query.all()
+    all_data = rentalProperty.query.all()
 
-    return render_template("rentalproperty.html", residents = all_data)
+    return render_template("rentalproperty.html", rentalProperty = all_data)
 
+#this route is for inserting data to mysql database via html forms
+@app.route('/rentalproperty/insertrentalproperty', methods = ['POST'])
+def insertrentalproperty():
+
+    if request.method == 'POST' and request.form:
+    
+        propCode = request.form['propCode']
+        Address = request.form['Address']
+        AvailabilityDate = request.form['AvailabilityDate']
+
+        my_data = rentalProperty(propCode, Address, AvailabilityDate)
+        db.session.add(my_data)
+        db.session.commit()
+
+        flash("Rental Property Inserted Successfully")
+
+        #return redirect(url_for('/residents'))
+        # return redirect(url_for('Index'))
+        return(request.form)
+    else:
+        flash("Rental Property Can Not Be Inserted")
+        return("Failed: request form is null")
+
+#this is our update route where we are going to update our employee
+@app.route('/rentalproperty/update', methods = ['GET', 'POST'])
+def updaterentalProperty():
+
+    if request.method == 'POST':
+        my_data = rentalProperty.query.get(request.form.get('propCode'))
+
+        my_data.Address = request.form['Address']
+        my_data.AvailabilityDate = request.form['AvailabilityDate']
+
+
+        db.session.commit()
+        flash("rentalProperty Updated Successfully")
+
+        return redirect(url_for('Index'))
+    
+#This route is for deleting our employee
+@app.route('/rentalproperty/delete/<propCode>/', methods = ['GET', 'POST'])
+def deleterentalProperty(propCode):
+    my_data = rentalProperty.query.get(propCode)
+    db.session.delete(my_data)
+    db.session.commit()
+    flash("propCode Deleted Successfully")
+
+    return redirect(url_for('Index'))
 
 ####################################################################################################################
-# This is the resident portal for the Users: Manage users in the system for 5558
+# This is the resident portal for the Users: Manage residents
 #
 #
 #
