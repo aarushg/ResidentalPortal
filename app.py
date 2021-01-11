@@ -210,20 +210,6 @@ def deleterentalProperty(propCode):
     return redirect(url_for('Index'))
 
 
-class rentalUnit(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    propCode  = db.Column(db.String(100))
-    rentalCode  = db.Column(db.String(100))
-    rent = db.Column(db.String(100))
-
-
-    def __init__(self, propCode, address, availDate):
-        self.propCode = propCode
-        self.rentalCode = rentalCode
-        self.rent = rent
-        
-
-
 ####################################################################################################################
 # This is the resident portal for Rental Unit
 #
@@ -249,7 +235,7 @@ def insertrentalUnit():
         rent = request.form['rent']
 
 
-        my_data = rentalUnit(id,propCode,rentalCode,rent,)
+        my_data = rentalUnit(id,propCode,rentalCode,rent)
         db.session.add(my_data)
         db.session.commit()
 
@@ -280,7 +266,7 @@ def updaterentalUnit():
     
 #This route is for deleting our employee
 @app.route('/rentalUnit/delete/<propCode>/', methods = ['GET', 'POST'])
-def deleterentalProperty(propCode):
+def deleterentalUnit(propCode):
     my_data = rentalProperty.query.get(propCode)
     db.session.delete(my_data)
     db.session.commit()
